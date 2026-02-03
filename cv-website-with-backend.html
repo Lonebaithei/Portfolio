@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analyst | Business Intelligence Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #fafaf8;
+            color: #333;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header & Title */
+        header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Navigation Links */
+        .nav-section {
+            margin: 50px 0;
+        }
+
+        .nav-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 8px 0;
+            border-bottom: 1px dotted #ccc;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            background-color: #fff9e6;
+        }
+
+        /* Admin Mode Toggle */
+        .admin-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #f5f5f0;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            z-index: 1000;
+        }
+
+        .admin-toggle:hover {
+            background-color: #f0f0eb;
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: white;
+            border: 2px solid #333;
+            padding: 20px;
+            width: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .admin-panel.show {
+            display: block;
+        }
+
+        .admin-panel h3 {
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .admin-panel input,
+        .admin-panel textarea,
+        .admin-panel select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            border: 1px solid #ccc;
+        }
+
+        .admin-panel button {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .admin-panel button:hover {
+            background-color: #555;
+        }
+
+        /* Loading indicator */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        /* Section Styling */
+        section {
+            margin: 50px 0;
+        }
+
+        section h2 {
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .entry {
+            margin-bottom: 25px;
+            padding-left: 20px;
+            border-left: 2px solid #ddd;
+        }
+
+        .entry-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .entry-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .entry-description {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .skill-category h3 {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .skill-category ul {
+            list-style: none;
+            font-size: 13px;
+            line-height: 1.9;
+            color: #555;
+        }
+
+        .skill-category li:before {
+            content: "• ";
+            margin-right: 8px;
+            color: #999;
+        }
+
+        /* PDF Button */
+        .pdf-button {
+            background-color: #f5f5f0;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-size: 13px;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            color: #333;
+            border-left: 4px solid #000;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-button:hover {
+            background-color: #f0f0eb;
+            border-color: #999;
+        }
+
+        /* Course Curriculum Styling */
+        .courses-container {
+            margin-top: 25px;
+        }
+
+        .course-year {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f7;
+            border-left: 3px solid #000;
+        }
+
+        .course-year h3 {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #333;
+        }
+
+        .semester {
+            margin-bottom: 20px;
+        }
+
+        .semester h4 {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .semester ul {
+            list-style: none;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #555;
+            margin-left: 15px;
+        }
+
+        .semester li {
+            margin-bottom: 6px;
+        }
+
+        .semester li:before {
+            content: "◦ ";
+            margin-right: 8px;
+            color: #999;
+        }
+
+        /* License Details */
+        .license-details {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .license-item {
+            padding: 20px;
+            background-color: #f9f9f7;
+            border: 1px solid #ddd;
+            border-left: 3px solid #000;
+        }
+
+        .license-item h4 {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .license-item p {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .license-item ul {
+            list-style: none;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #555;
+            margin-left: 15px;
+        }
+
+        .license-item li {
+            margin-bottom: 6px;
+        }
+
+        .license-item li:before {
+            content: "✓ ";
+            margin-right: 8px;
+            color: #666;
+        }
+
+        /* Highlights Box */
+        .highlight-box {
+            background-color: #f5f5f0;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #000;
+        }
+
+        .highlight-box h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .highlight-box p {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid #000;
+            margin-top: 60px;
+            padding-top: 30px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+
+        footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print Styling */
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 20px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .pdf-button {
+                display: none;
+            }
+            .admin-toggle, .admin-panel {
+                display: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .nav-links {
+                grid-template-columns: 1fr;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .license-details {
+                grid-template-columns: 1fr;
+            }
+            .admin-panel {
+                width: 90%;
+                right: 5%;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Toggle Button -->
+    <button class="admin-toggle" onclick="toggleAdminPanel()">Admin Mode</button>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <h3>Admin Panel</h3>
+        <div class="loading" id="adminLoading">Loading...</div>
+        
+        <div>
+            <h4 style="font-size: 12px; margin-bottom: 10px;">Update Personal Info</h4>
+            <input type="text" id="fullName" placeholder="Full Name">
+            <input type="text" id="title" placeholder="Title">
+            <input type="email" id="email" placeholder="Email">
+            <input type="tel" id="phone" placeholder="Phone">
+            <input type="text" id="location" placeholder="Location">
+            <textarea id="summary" placeholder="Professional Summary" rows="3"></textarea>
+            <button onclick="updatePersonalInfo()">Save Personal Info</button>
+        </div>
+
+        <hr style="margin: 15px 0; border: 1px solid #ddd;">
+
+        <div>
+            <h4 style="font-size: 12px; margin-bottom: 10px;">Add Experience</h4>
+            <input type="text" id="jobTitle" placeholder="Job Title">
+            <input type="text" id="companyName" placeholder="Company Name">
+            <input type="date" id="startDate" placeholder="Start Date">
+            <input type="date" id="endDate" placeholder="End Date">
+            <textarea id="expDescription" placeholder="Description" rows="2"></textarea>
+            <button onclick="addExperience()">Add Experience</button>
+        </div>
+
+        <hr style="margin: 15px 0; border: 1px solid #ddd;">
+
+        <div>
+            <h4 style="font-size: 12px; margin-bottom: 10px;">Add Skill</h4>
+            <input type="text" id="skillName" placeholder="Skill Name">
+            <select id="skillCategory">
+                <option value="">Select Category</option>
+                <option value="Business Intelligence & Analytics">BI & Analytics</option>
+                <option value="Technical & Operational">Technical & Operational</option>
+                <option value="Professional Soft Skills">Soft Skills</option>
+                <option value="Operational Expertise">Operational Expertise</option>
+            </select>
+            <input type="text" id="proficiencyLevel" placeholder="Proficiency Level">
+            <button onclick="addSkill()">Add Skill</button>
+        </div>
+
+        <hr style="margin: 15px 0; border: 1px solid #ddd;">
+
+        <button onclick="syncDataFromAPI()" style="background-color: #666;">Reload Data from API</button>
+    </div>
+
+    <header>
+        <h1>DATA ANALYST & BUSINESS INTELLIGENCE SPECIALIST</h1>
+        <p class="subtitle">Professional CV | Strategic Thinker | Versatile Professional</p>
+        <div class="contact-info">
+            <p><strong>Location:</strong> <span id="contactLocation">Gaborone, Botswana</span></p>
+            <p><strong>Email:</strong> <span id="contactEmail">contact@example.com</span></p>
+            <p><strong>Phone:</strong> <span id="contactPhone">+267 XX XXX XXXX</span></p>
+            <p><strong>LinkedIn:</strong> <span id="contactLinkedin">linkedin.com/in/yourprofile</span></p>
+        </div>
+    </header>
+
+    <section class="nav-section">
+        <div class="nav-links">
+            <a href="#professional-summary">Professional Summary</a>
+            <a href="#experience">Professional Experience</a>
+            <a href="#education">Education & Qualifications</a>
+            <a href="#skills">Core Competencies</a>
+            <a href="#unique-value">Unique Value Proposition</a>
+            <a href="#certifications">Certifications & Licenses</a>
+        </div>
+    </section>
+
+    <div class="highlight-box">
+        <h3>Distinctive Profile</h3>
+        <p>A uniquely qualified professional combining advanced Business Intelligence and Data Analytics expertise with practical operational knowledge. SADC EC Heavy Duty Truck Driver License holder, bringing discipline, safety consciousness, and compliance expertise to technical roles. This rare combination enables effective communication across technical and operational teams, with demonstrated ability to optimize processes, manage risk, and drive efficiency.</p>
+    </div>
+
+    <section id="professional-summary">
+        <h2>Professional Summary</h2>
+        <p id="summaryText">Data Analyst and Business Intelligence specialist with demonstrated expertise in designing, implementing, and optimizing data solutions for enterprise environments. Skilled in translating complex business requirements into actionable insights through advanced analytics and visualization. Proven track record of improving operational efficiency and supporting data-driven decision-making across multiple business functions.</p>
+        <p style="margin-top: 15px;">Brings unique perspective combining technical excellence with operational understanding, ensuring solutions are not only analytically sound but practically implementable and maintainable.</p>
+    </section>
+
+    <section id="experience">
+        <h2>Professional Experience</h2>
+        <div id="experienceContainer"></div>
+    </section>
+
+    <section id="education">
+        <h2>Education & Qualifications</h2>
+        
+        <div class="entry">
+            <div class="entry-title">Bachelor of Science in Business Intelligence and Data Analytics</div>
+            <div class="entry-subtitle">University Name | 4 Years</div>
+            <div class="entry-description">
+                Comprehensive degree program combining business analysis, information technology, and advanced data analytics. Specialized curriculum in Business Intelligence systems, data warehousing, advanced analytics, and emerging technologies including artificial intelligence and user experience design.
+            </div>
+        </div>
+
+        <button onclick="generateCoursePDF()" class="pdf-button">📄 Download Course Curriculum (PDF)</button>
+
+        <div class="courses-container" id="coursesContainer"></div>
+    </section>
+
+    <section id="skills">
+        <h2>Core Competencies</h2>
+        <div class="skills-grid" id="skillsGrid"></div>
+    </section>
+
+    <section id="unique-value">
+        <h2>Unique Value Proposition</h2>
+        
+        <div class="highlight-box">
+            <h3>The Intersection of Data & Operations</h3>
+            <p>Few professionals combine advanced analytics expertise with practical operational knowledge. SADC EC Heavy Duty Truck Driver licensing requires rigorous training in safety, compliance, maintenance, and regulatory adherence. This background uniquely positions this professional to:</p>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Translate Between Technical & Operational Teams</div>
+            <div class="entry-description">
+                Fluent in both data science and field operations languages. Can identify optimization opportunities that are not just analytically valid but operationally feasible and compliant.
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Optimize Logistics & Fleet Operations</div>
+            <div class="entry-description">
+                Deep understanding of transportation, safety regulations, and operational efficiency. Can develop BI solutions that improve routing, maintenance scheduling, fuel efficiency, and regulatory compliance.
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Ensure Safety & Compliance</div>
+            <div class="entry-description">
+                Brings disciplined approach to process design and documentation. Recognizes importance of compliance frameworks, risk management, and safety-first operations.
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-title">Drive Process Efficiency</div>
+            <div class="entry-description">
+                Combines analytical rigor with practical knowledge of operational bottlenecks and improvement opportunities. Can recommend solutions that achieve measurable business impact.
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications">
+        <h2>Certifications & Licenses</h2>
+        
+        <div class="entry">
+            <div class="entry-title">SADC EC Heavy Duty Truck Driver License</div>
+            <div class="entry-subtitle">Professional License | Active</div>
+            <div class="entry-description">
+                Professional commercial driver license for heavy-duty vehicles in SADC region. Requires demonstrated knowledge of vehicle safety, maintenance, regulations, and operational excellence. Demonstrates commitment to professional standards and regulatory compliance.
+            </div>
+        </div>
+
+        <button onclick="generateLicensePDF()" class="pdf-button">📄 Download License Details (PDF)</button>
+
+        <div class="license-details">
+            <div class="license-item">
+                <h4>License Type: Heavy Duty Commercial Vehicle Driver</h4>
+                <p><strong>Region:</strong> SADC EC (Southern African Development Community - East & Central)</p>
+                <p><strong>Status:</strong> Active & Current</p>
+                <p><strong>Requirements Met:</strong></p>
+                <ul>
+                    <li>Safety and Compliance Training</li>
+                    <li>Vehicle Maintenance & Mechanical Knowledge</li>
+                    <li>Regulatory Documentation & Record Keeping</li>
+                    <li>Professional Responsibility & Accountability</li>
+                    <li>Health & Safety Standards</li>
+                    <li>Road Safety Regulations</li>
+                </ul>
+            </div>
+
+            <div class="license-item">
+                <h4>Transferable Skills to Data Analytics & BI</h4>
+                <ul>
+                    <li><strong>Precision & Accuracy:</strong> Critical in both data management and fleet operations</li>
+                    <li><strong>Compliance Knowledge:</strong> Understanding of regulatory frameworks applicable to business processes</li>
+                    <li><strong>Safety Culture:</strong> Risk identification and mitigation mindset</li>
+                    <li><strong>Operational Efficiency:</strong> Optimization of resources and processes</li>
+                    <li><strong>Reliability & Discipline:</strong> Consistent performance and professional standards</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="entry" style="margin-top: 30px;">
+            <div class="entry-title">Professional Certifications</div>
+            <div class="entry-subtitle">Relevant to Business Intelligence & Data Analytics</div>
+            <div class="entry-description">
+                Add relevant certifications such as: Microsoft Certified: Data Analyst Associate | Tableau Desktop Specialist | Google Analytics Certification | Advanced SQL Certification | Python Professional Certificate | Other industry-recognized credentials
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Professional CV | Data Analyst & Business Intelligence Specialist | Gaborone, Botswana</p>
+        <p style="margin-top: 10px; color: #999;">Last Updated: January 2026 | <a href="#" onclick="window.print(); return false;">Print/Save as PDF</a></p>
+    </footer>
+
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <script>
+        // API Configuration
+        const API_URL = 'http://localhost:5000/api';
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            syncDataFromAPI();
+        });
+
+        // ==================== ADMIN PANEL ====================
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('show');
+        }
+
+        function showLoading(show = true) {
+            document.getElementById('adminLoading').classList.toggle('show', show);
+        }
+
+        // ==================== PERSONAL INFO ====================
+
+        async function updatePersonalInfo() {
+            const fullName = document.getElementById('fullName').value;
+            const title = document.getElementById('title').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
+            const summary = document.getElementById('summary').value;
+
+            try {
+                showLoading();
+                const response = await fetch(`${API_URL}/personal-info`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name: fullName, title, email, phone, location, summary })
+                });
+                const data = await response.json();
+                alert('Personal info updated successfully!');
+                syncDataFromAPI();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error updating personal info:', error);
+                alert('Error updating personal info');
+                showLoading(false);
+            }
+        }
+
+        // ==================== EXPERIENCE ====================
+
+        async function loadExperience() {
+            try {
+                const response = await fetch(`${API_URL}/experience`);
+                const experiences = await response.json();
+                
+                const container = document.getElementById('experienceContainer');
+                container.innerHTML = '';
+
+                experiences.forEach(exp => {
+                    const endDate = exp.is_current ? 'Present' : exp.end_date || 'N/A';
+                    const entryHTML = `
+                        <div class="entry">
+                            <div class="entry-title">${exp.job_title}</div>
+                            <div class="entry-subtitle">${exp.company_name} | ${exp.start_date} – ${endDate}</div>
+                            <div class="entry-description">${exp.description || ''}</div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', entryHTML);
+                });
+            } catch (error) {
+                console.error('Error loading experience:', error);
+            }
+        }
+
+        async function addExperience() {
+            const jobTitle = document.getElementById('jobTitle').value;
+            const companyName = document.getElementById('companyName').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const description = document.getElementById('expDescription').value;
+
+            if (!jobTitle || !companyName || !startDate) {
+                alert('Please fill in required fields');
+                return;
+            }
+
+            try {
+                showLoading();
+                const response = await fetch(`${API_URL}/experience`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_title: jobTitle,
+                        company_name: companyName,
+                        start_date: startDate,
+                        end_date: endDate,
+                        description,
+                        is_current: !endDate
+                    })
+                });
+                const data = await response.json();
+                alert('Experience added successfully!');
+                document.getElementById('jobTitle').value = '';
+                document.getElementById('companyName').value = '';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                document.getElementById('expDescription').value = '';
+                loadExperience();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error adding experience:', error);
+                alert('Error adding experience');
+                showLoading(false);
+            }
+        }
+
+        // ==================== COURSES ====================
+
+        async function loadCourses() {
+            try {
+                const response = await fetch(`${API_URL}/courses`);
+                const courses = await response.json();
+                
+                const container = document.getElementById('coursesContainer');
+                container.innerHTML = '';
+
+                // Group courses by year
+                const coursesByYear = {};
+                courses.forEach(course => {
+                    if (!coursesByYear[course.year]) {
+                        coursesByYear[course.year] = {};
+                    }
+                    if (!coursesByYear[course.year][course.semester]) {
+                        coursesByYear[course.year][course.semester] = [];
+                    }
+                    coursesByYear[course.year][course.semester].push(course);
+                });
+
+                // Get year labels
+                const yearLabels = {
+                    1: 'Year 1 - Foundation',
+                    2: 'Year 2 - Core Skills',
+                    3: 'Year 3 - Specialization',
+                    4: 'Year 4 - Advanced & Capstone'
+                };
+
+                // Render courses
+                Object.keys(coursesByYear).sort().forEach(year => {
+                    const yearHTML = `<div class="course-year"><h3>${yearLabels[year] || `Year ${year}`}</h3>`;
+                    
+                    [1, 2].forEach(sem => {
+                        if (coursesByYear[year][sem]) {
+                            let semesterHTML = `<div class="semester"><h4>Semester ${sem}</h4><ul>`;
+                            coursesByYear[year][sem].forEach(course => {
+                                semesterHTML += `<li><strong>${course.course_code}</strong> – ${course.course_name}</li>`;
+                            });
+                            semesterHTML += '</ul></div>';
+                            container.insertAdjacentHTML('beforeend', yearHTML + semesterHTML + '</div>');
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        // ==================== SKILLS ====================
+
+        async function loadSkills() {
+            try {
+                const response = await fetch(`${API_URL}/skills`);
+                const skills = await response.json();
+                
+                const skillsByCategory = {};
+                skills.forEach(skill => {
+                    if (!skillsByCategory[skill.category]) {
+                        skillsByCategory[skill.category] = [];
+                    }
+                    skillsByCategory[skill.category].push(skill.skill_name);
+                });
+
+                const container = document.getElementById('skillsGrid');
+                container.innerHTML = '';
+
+                Object.keys(skillsByCategory).forEach(category => {
+                    const categoryHTML = `
+                        <div class="skill-category">
+                            <h3>${category}</h3>
+                            <ul>
+                                ${skillsByCategory[category].map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', categoryHTML);
+                });
+            } catch (error) {
+                console.error('Error loading skills:', error);
+            }
+        }
+
+        async function addSkill() {
+            const skillName = document.getElementById('skillName').value;
+            const skillCategory = document.getElementById('skillCategory').value;
+            const proficiencyLevel = document.getElementById('proficiencyLevel').value;
+
+            if (!skillName || !skillCategory) {
+                alert('Please fill in required fields');
+                return;
+            }
+
+            try {
+                showLoading();
+                const response = await fetch(`${API_URL}/skills`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        skill_name: skillName,
+                        category: skillCategory,
+                        proficiency_level: proficiencyLevel
+                    })
+                });
+                alert('Skill added successfully!');
+                document.getElementById('skillName').value = '';
+                document.getElementById('skillCategory').value = '';
+                document.getElementById('proficiencyLevel').value = '';
+                loadSkills();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error adding skill:', error);
+                alert('Error adding skill');
+                showLoading(false);
+            }
+        }
+
+        // ==================== SYNC DATA ====================
+
+        async function syncDataFromAPI() {
+            showLoading();
+            try {
+                await loadExperience();
+                await loadCourses();
+                await loadSkills();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error syncing data:', error);
+                alert('Error connecting to backend. Make sure the server is running on port 5000.');
+                showLoading(false);
+            }
+        }
+
+        // ==================== PDF GENERATION ====================
+
+        function generateCoursePDF() {
+            const element = document.querySelector('#coursesContainer');
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <h1 style="text-align: center; margin-bottom: 10px; font-size: 24px; font-family: Georgia, serif;">Course Curriculum</h1>
+                <h2 style="text-align: center; font-size: 16px; margin-bottom: 20px; font-family: Georgia, serif;">Bachelor of Science in Business Intelligence and Data Analytics</h2>
+                <hr style="margin-bottom: 30px; border: 1px solid #000;">
+            `;
+            
+            const container = document.createElement('div');
+            container.appendChild(header);
+            container.appendChild(element.cloneNode(true));
+
+            const opt = {
+                margin: 10,
+                filename: 'Course-Curriculum.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(container).save();
+        }
+
+        function generateLicensePDF() {
+            const licenseDetails = document.querySelector('.license-details');
+            const intro = document.querySelector('#certifications .entry:first-of-type');
+            
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <h1 style="text-align: center; margin-bottom: 10px; font-size: 24px; font-family: Georgia, serif;">SADC EC Heavy Duty Truck Driver License</h1>
+                <h2 style="text-align: center; font-size: 14px; margin-bottom: 20px; font-family: Georgia, serif;">Professional License & Qualifications Summary</h2>
+                <hr style="margin-bottom: 30px; border: 1px solid #000;">
+            `;
+            
+            const container = document.createElement('div');
+            container.appendChild(header);
+            container.appendChild(intro.cloneNode(true));
+            container.appendChild(licenseDetails.cloneNode(true));
+
+            const opt = {
+                margin: 10,
+                filename: 'License-Details.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(container).save();
+        }
+    </script>
+</body>
+</html>
